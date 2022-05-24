@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './questao.dart';
 
 main() {
   runApp(const PerguntaApp());
@@ -17,12 +18,12 @@ class _PerguntaAppState extends State<PerguntaApp> {
     'Qual é a seu animal favorito?'
   ];
 
-  var perguntaSelecionada = 0;
+  var _perguntaSelecionada = 0;
 
-  void responder() {
+  void _responder() {
     setState(() {
-      if(perguntaSelecionada < perguntas.length) {
-        perguntaSelecionada++;
+      if(_perguntaSelecionada < perguntas.length) {
+        _perguntaSelecionada++;
       }
     });
   }
@@ -36,17 +37,17 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: [
-            Text(perguntas[perguntaSelecionada]),
+            Questao(perguntas[_perguntaSelecionada]),
             ElevatedButton(
-              onPressed: responder,
+              onPressed: _responder,
               child: const Text('Resposta 1'),
             ),
             ElevatedButton(
-              onPressed: responder,
+              onPressed: _responder,
               child: const Text('Resposta 2'),
             ),
             ElevatedButton(
-              onPressed: responder,
+              onPressed: _responder,
               child: const Text('Resposta 3'),
             ),
           ],
