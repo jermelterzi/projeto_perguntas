@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_perguntas/answer.dart';
-import './question.dart';
+import 'package:projeto_perguntas/quiz.dart';
+import './result.dart';
 
 main() {
   runApp(const PerguntaApp());
@@ -14,10 +14,10 @@ class PerguntaApp extends StatefulWidget {
 }
 
 class _PerguntaAppState extends State<PerguntaApp> {
-  final List<Map<String, Object>> questions = [
+  final List<Map<String, Object>> _questions = const [
     {
       'text': 'Qual é a sua cor favorita?',
-      'aswers': [
+      'answers': [
         'Verde',
         'Azul',
         'Vermelho',
@@ -26,7 +26,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
     },
     {
       'text': 'Qual é a seu animal favorito?',
-      'aswers': [
+      'answers': [
         'Papagaio',
         'Elefante',
         'Lagarto',
@@ -35,7 +35,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
     },
     {
       'text': 'Qual é o seu instrutor favorito?',
-      'aswers': [
+      'answers': [
         'João',
         'Léo',
         'Maria',
@@ -47,30 +47,32 @@ class _PerguntaAppState extends State<PerguntaApp> {
   var _questionSelect = 0;
 
   void _reply() {
-    setState(() {
-      _questionSelect++;
-    });
+    if (hasQuestion) {
+      setState(() {
+        _questionSelect++;
+      });
+    }
+  }
+
+  bool get hasQuestion {
+    return _questionSelect < _questions.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> aswers = questions[_questionSelect].cast()['aswers'];
-
-    // for(String aswerText in ) {
-    //   aswers.add(Answer(aswerText, _responder));
-    // }
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Perguntas'),
         ),
-        body: Column(
-          children: [
-            Question(questions[_questionSelect]['text'].toString()),
-            ...aswers.map((t) => Answer(t, _reply)).toList(),
-          ],
-        ),
+        body: hasQuestion
+            ? Quiz(
+                questions: _questions,
+                questionSelect: _questionSelect,
+                reply: _reply,
+              )
+            : const Result('Parabéns!'),
       ),
     );
   }
