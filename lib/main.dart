@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './questao.dart';
+import 'package:projeto_perguntas/answer.dart';
+import './question.dart';
 
 main() {
   runApp(const PerguntaApp());
@@ -13,23 +14,52 @@ class PerguntaApp extends StatefulWidget {
 }
 
 class _PerguntaAppState extends State<PerguntaApp> {
-  final perguntas = [
-    'Qual é a sua cor favorita?',
-    'Qual é a seu animal favorito?'
+  final List<Map<String, Object>> questions = [
+    {
+      'text': 'Qual é a sua cor favorita?',
+      'aswers': [
+        'Verde',
+        'Azul',
+        'Vermelho',
+        'Branco',
+      ],
+    },
+    {
+      'text': 'Qual é a seu animal favorito?',
+      'aswers': [
+        'Papagaio',
+        'Elefante',
+        'Lagarto',
+        'Avestruz',
+      ],
+    },
+    {
+      'text': 'Qual é o seu instrutor favorito?',
+      'aswers': [
+        'João',
+        'Léo',
+        'Maria',
+        'Lucas',
+      ],
+    },
   ];
 
-  var _perguntaSelecionada = 0;
+  var _questionSelect = 0;
 
-  void _responder() {
+  void _reply() {
     setState(() {
-      if(_perguntaSelecionada < perguntas.length) {
-        _perguntaSelecionada++;
-      }
+      _questionSelect++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<String> aswers = questions[_questionSelect].cast()['aswers'];
+
+    // for(String aswerText in ) {
+    //   aswers.add(Answer(aswerText, _responder));
+    // }
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -37,19 +67,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: [
-            Questao(perguntas[_perguntaSelecionada]),
-            ElevatedButton(
-              onPressed: _responder,
-              child: const Text('Resposta 1'),
-            ),
-            ElevatedButton(
-              onPressed: _responder,
-              child: const Text('Resposta 2'),
-            ),
-            ElevatedButton(
-              onPressed: _responder,
-              child: const Text('Resposta 3'),
-            ),
+            Question(questions[_questionSelect]['text'].toString()),
+            ...aswers.map((t) => Answer(t, _reply)).toList(),
           ],
         ),
       ),
