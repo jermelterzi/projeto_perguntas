@@ -12,7 +12,7 @@ class Quiz extends StatelessWidget {
 
   final List<Map<String, Object>> questions;
   final int questionSelect;
-  final Function() reply;
+  final Function(int) reply;
 
   bool get hasQuestion {
     return questionSelect < questions.length;
@@ -20,13 +20,20 @@ class Quiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> answers =
+    List<Map<String, Object>> answers =
     hasQuestion ? questions[questionSelect].cast()['answers'] : [];
 
     return Column(
       children: [
         Question(questions[questionSelect]['text'].toString()),
-        ...answers.map((t) => Answer(t, reply)).toList(),
+        ...answers
+            .map((ans) {
+          return Answer(
+            ans['text'].toString(),
+                () => reply(int.parse(ans['points'].toString())),
+          );
+        })
+            .toList(),
       ],
     );
   }
